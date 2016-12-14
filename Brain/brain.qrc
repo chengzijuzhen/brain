@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/Brain">
+        <file>Resources/about.png</file>
+        <file>Resources/box.png</file>
+        <file>Resources/brain.png</file>
+        <file>Resources/build.png</file>
+        <file>Resources/clear.png</file>
+        <file>Resources/copy.png</file>
+        <file>Resources/cut.png</file>
+        <file>Resources/edit.png</file>
+        <file>Resources/exit.png</file>
+        <file>Resources/find.png</file>
+        <file>Resources/gotocell.png</file>
+        <file>Resources/icon.png</file>
+        <file>Resources/MC.png</file>
+        <file>Resources/new.png</file>
+        <file>Resources/open.png</file>
+        <file>Resources/paste.png</file>
+        <file>Resources/plane.png</file>
+        <file>Resources/save.png</file>
+    </qresource>
+</RCC>
