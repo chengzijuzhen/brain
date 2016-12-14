@@ -74,6 +74,8 @@ public:
 	Brain(QWidget *parent = 0);
 	~Brain();
 
+
+
 signals:
 	void canShowSkin();
 
@@ -120,46 +122,21 @@ private:
 	//Ui::QtTestClass ui;
 	QMenu *file;
 	QMenu *edit;
-	QMenu *tool;
-	QMenu *setting;
 	QMenu *menuAbout;
 
 	QToolBar *filetoolbar;
 
-	//file
+
 	QAction *a_fileOpen;
 	QAction *a_save;
 	QAction *a_close;
 
-	//edit
 	QAction *showBrain;
 	QAction *showBone;
 	QAction *showSkin;
 	QAction *showBrainPool;
 	QAction *removeBack;
 
-	//tool
-	QAction *a_printScreen;
-	QAction *a_log;
-
-	//setting
-	QAction *a_default;
-	QAction *a_appearance;
-	QAction *a_views;
-	QAction *a_display;
-	QAction *a_extension;
-	QAction *a_shortcutKey;
-	QAction *a_layout;
-
-/*常规（一些默认设置，比如文件保存位置）
-appearance（界面样式，字体大小等）
-views（界面有哪些功能模块）
-display（背景色，各种前景色配置）
-extension
-快捷键设置
-layout设置（图像展示框）
-*/
-	//help
 	QAction *info;
 
 
