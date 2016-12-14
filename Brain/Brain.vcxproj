@@ -72,7 +72,7 @@
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</GenerateManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EmbedManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EmbedManifest>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\work\vtk\VTK\bin\lib\Debug;D:\Qt\Qt5.3.2\5.3\msvc2013_64_opengl\include;D:\Qt\Qt5.3.2\5.3\msvc2013_64_opengl\include\QtWidgets;D:\work\vtk\VTK\include\vtk-6.2;C:\Users\Kuangyan\Desktop\Brain02 - 副本\Brain\Brain\GeneratedFiles;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\work\vtk\VTK\bin\lib\Debug;D:\Qt\Qt5.3.2\5.3\msvc2013_64_opengl\include;D:\Qt\Qt5.3.2\5.3\msvc2013_64_opengl\include\QtWidgets;D:\work\vtk\VTK\include\vtk-6.2;C:\Users\Kuangyan\Desktop\Brain\Brain\GeneratedFiles;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Qt\Qt5.3.2\5.3\msvc2013_64_opengl\lib;D:\work\vtk\VTK\lib;D:\Qt\Qt5.3.2\5.3\msvc2013_64_opengl\include\QtWidgets;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
