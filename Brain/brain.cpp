@@ -58,7 +58,9 @@ void Brain::setupMenu()
 	//file=new QMenu("File",this);
 	
 	file=menuBar()->addMenu("File");
-	edit=menuBar()->addMenu("Edit");
+	edit=menuBar()->addMenu("Edit");	
+	tool=menuBar()->addMenu("Tool");
+	setting=menuBar()->addMenu("Setting");
 	menuAbout=menuBar()->addMenu("About");
 
 	file->addAction(a_fileOpen);
@@ -71,6 +73,17 @@ void Brain::setupMenu()
 	edit->addAction(showSkin);
 	edit->addAction(showBrainPool);
 	edit->addAction(removeBack);
+
+	tool->addAction(a_printScreen);
+	tool->addAction(a_log);
+	//setting
+	setting->addAction(a_default);
+	setting->addAction(a_appearance);
+	setting->addAction(a_views);
+	setting->addAction(a_display);
+	setting->addAction(a_extension);
+	setting->addAction(a_shortcutKey);
+	setting->addAction(a_layout);
 
 	menuAbout->addAction(info);
 }
