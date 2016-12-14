@@ -8,9 +8,6 @@
 #include "ui_brain.h"
 
 #include <QtWidgets/QLabel>
-
-//#pragma comment( lib, "qlabel.lib")
-
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QAction>
@@ -21,7 +18,6 @@
 #include <QtWidgets/QFileDialog>
 
 #include "vtkRenderer.h"
-
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 #include "vtkPiecewiseFunction.h"
@@ -74,8 +70,6 @@ public:
 	Brain(QWidget *parent = 0);
 	~Brain();
 
-
-
 signals:
 	void canShowSkin();
 
@@ -122,21 +116,40 @@ private:
 	//Ui::QtTestClass ui;
 	QMenu *file;
 	QMenu *edit;
-	QMenu *menuAbout;
+	QMenu *tool;
+	QMenu *settings;
+	QMenu *help;
 
 	QToolBar *filetoolbar;
 
-
+	//file
 	QAction *a_fileOpen;
 	QAction *a_save;
 	QAction *a_close;
+	QAction *exit;
+	QAction *downloadExample;
 
+	//edit
 	QAction *showBrain;
 	QAction *showBone;
 	QAction *showSkin;
 	QAction *showBrainPool;
 	QAction *removeBack;
 
+	//tool
+	QAction *printScreen;
+	QAction *seeLog;
+
+	//setting
+	QAction *defaults;
+	QAction *appearance;
+	QAction *views;
+	QAction *display;
+	QAction *extension;
+	QAction *shortcutKey;
+	QAction *layout;
+
+	//help
 	QAction *info;
 
 

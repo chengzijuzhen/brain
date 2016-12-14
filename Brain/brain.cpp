@@ -59,11 +59,15 @@ void Brain::setupMenu()
 	
 	file=menuBar()->addMenu("File");
 	edit=menuBar()->addMenu("Edit");
-	menuAbout=menuBar()->addMenu("About");
+	tool=menuBar()->addMenu("Tool");
+	settings=menuBar()->addMenu("Setting");
+	help=menuBar()->addMenu("Help");
 
 	file->addAction(a_fileOpen);
 	file->addAction(a_save);
+	file->addAction(downloadExample);
 	file->addAction(a_close);
+	file->addAction(exit);
 	//file->setIcon(QIcon());
 
 	edit->addAction(showBrain);
@@ -72,7 +76,18 @@ void Brain::setupMenu()
 	edit->addAction(showBrainPool);
 	edit->addAction(removeBack);
 
-	menuAbout->addAction(info);
+	tool->addAction(printScreen);
+	tool->addAction(seeLog);
+
+	settings->addAction(defaults);
+	settings->addAction(appearance);
+	settings->addAction(views);
+	settings->addAction(display);
+	settings->addAction(extension);
+	settings->addAction(shortcutKey);
+	settings->addAction(layout);
+
+	help->addAction(info);
 }
 
 void Brain::setupToolBar()
