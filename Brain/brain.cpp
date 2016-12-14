@@ -60,7 +60,7 @@ void Brain::setupMenu()
 	file=menuBar()->addMenu("File");
 	edit=menuBar()->addMenu("Edit");
 	tool=menuBar()->addMenu("Tool");
-	settings=menuBar()->addMenu("Setting");
+	settings=menuBar()->addMenu("Settings");
 	help=menuBar()->addMenu("Help");
 
 	file->addAction(a_fileOpen);
@@ -75,10 +75,11 @@ void Brain::setupMenu()
 	edit->addAction(showSkin);
 	edit->addAction(showBrainPool);
 	edit->addAction(removeBack);
+	edit->addAction(info);
 
 	tool->addAction(printScreen);
 	tool->addAction(seeLog);
-
+	
 	settings->addAction(defaults);
 	settings->addAction(appearance);
 	settings->addAction(views);
@@ -86,8 +87,8 @@ void Brain::setupMenu()
 	settings->addAction(extension);
 	settings->addAction(shortcutKey);
 	settings->addAction(layout);
-
-	help->addAction(info);
+	
+	help->addAction(about);
 }
 
 void Brain::setupToolBar()
@@ -102,6 +103,15 @@ void Brain::setupToolBar()
 
 void Brain::createAction()
 {
+	createFileAction();
+	createEditAction();
+	createToolAction();
+	createSettingsAction();
+	createHelpAction();
+}
+
+void Brain::createFileAction()
+{
 	a_fileOpen=new QAction("Open file",this);
 	a_fileOpen->setIcon(QIcon(":/Brain/Resources/open.png"));
 	connect(a_fileOpen, SIGNAL(triggered()), this, SLOT(fileOpen()));
@@ -110,10 +120,18 @@ void Brain::createAction()
 	a_save->setIcon(QIcon(":Brain/Resources/save.png"));
 	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave()));
 
+	downloadExample=new QAction("Download Sample Example",this);	
+	//connect(, SIGNAL(triggered()), this, SLOT());
+
 	a_close=new QAction("Close",this);
 	a_close->setIcon(QIcon(":Brain/Resources/exit.png"));
 	connect(a_close, SIGNAL(triggered()), this, SLOT(fileClose()));
 
+	exit=new QAction("Exit",this);	
+	//connect(, SIGNAL(triggered()), this, SLOT());
+}
+
+void Brain::createEditAction(){
 
 	showBrain=new QAction("Show Brain",this);
 	connect(showBrain,SIGNAL(triggered()),this,SLOT(showBrainOnly()));
@@ -134,6 +152,31 @@ void Brain::createAction()
 	info=new QAction("Information",this);
 	connect(info,SIGNAL(triggered()),this,SLOT(showInfo()));
 }
+
+
+void Brain::createToolAction(){
+
+	printScreen = new QAction("Print Screen",this);
+	seeLog = new QAction("See Log Messages",this);	
+
+}
+
+void Brain::createSettingsAction(){
+
+	defaults = new QAction("Defaults",this);
+	appearance = new QAction("Appearance",this);
+	views = new QAction("Views",this);
+	display = new QAction("Display",this);
+	extension = new QAction("Extension",this);
+	layout = new QAction("Layout",this);
+	shortcutKey = new QAction("ShortcutKey",this);	
+}
+
+void Brain::createHelpAction(){
+
+	about = new QAction("About Brain.exe",this);
+}
+
 
 void Brain::fileOpen()
 {

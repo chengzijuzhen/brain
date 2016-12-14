@@ -135,6 +135,7 @@ private:
 	QAction *showSkin;
 	QAction *showBrainPool;
 	QAction *removeBack;
+	QAction *info;
 
 	//tool
 	QAction *printScreen;
@@ -150,14 +151,21 @@ private:
 	QAction *layout;
 
 	//help
-	QAction *info;
-
+	
+	QAction *about;
 
 	int dim[3];
 	unsigned short * copyOfImg;
 	void setupMenu();
 	void setupToolBar();
+
 	void createAction();
+	void createFileAction();
+	void createEditAction();
+	void createSettingsAction();
+	void createToolAction();
+	void createHelpAction();
+
 	void showAll();
 	void freeMemory();
 
