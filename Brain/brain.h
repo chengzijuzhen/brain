@@ -4,9 +4,11 @@
 #define vtkRenderingCore_AUTOINIT 4(vtkInteractionStyle,vtkRenderingFreeType,vtkRenderingFreeTypeOpenGL,vtkRenderingOpenGL)  
 #define vtkRenderingVolume_AUTOINIT 1(vtkRenderingVolumeOpenGL)
 
-#include <QtWidgets/QMainWindow>
 #include "ui_brain.h"
+#include "core.h"
+#include "bh.h"
 
+#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QToolBar>
@@ -60,7 +62,6 @@
 #include "vtkSmartVolumeMapper.h"
 #include <vtkSmartPointer.h>
 #include <QVTKWidget.h>
-#include "bh.h"
 
 class Brain : public QMainWindow
 {
@@ -73,15 +74,17 @@ public:
 signals:
 	void canShowSkin();
 
-	public slots:
+public slots:
 		void fileOpen();
 		void fileSave();
 		void fileClose();
 		void mousePressEvent(QMouseEvent *eve);
 
 private:
-	vtkDICOMImageReader *reader,*reader1;
+	QVTKWidget *widget;
+	QVTKWidget *widget2;
 	vtkImageData *data;
+	vtkDICOMImageReader *reader,*reader1;
 	vtkImageCast *readerImageCast;
 	vtkPiecewiseFunction *opacityTransferFunction;
 	vtkColorTransferFunction *colorTransferFunction;
@@ -93,11 +96,10 @@ private:
 	vtkOpenGLGPUVolumeRayCastMapper *glRayCastMapper;
 	vtkVolumeMapper *mapper;
 	vtkVolume *volume;
-	QVTKWidget *widget;
-	QVTKWidget *widget2;
+	int dim[3];
 	vtkRenderer *ren;
 	vtkRenderer *ren2;
-	//Ui::QtTestClass ui;
+		//Ui::QtTestClass ui;
 	QMenu *file;
 	QMenu *edit;
 	QMenu *tool;
@@ -134,11 +136,9 @@ private:
 	QAction *shortcutKey;
 	QAction *layout;
 
-	//help
-	
-	QAction *about;
+	//help	
+	QAction *about;	
 
-	
 	unsigned short * copyOfImg;
 	void setupMenu();
 	void setupToolBar();
@@ -149,8 +149,5 @@ private:
 	void createSettingsAction();
 	void createToolAction();
 	void createHelpAction();	
-	
-	bh *biliShow; 
 };
-
 #endif // BRAIN_H

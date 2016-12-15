@@ -128,18 +128,6 @@ void Brain::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 2: _t->fileSave(); break;
         case 3: _t->fileClose(); break;
         case 4: _t->mousePressEvent((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
-        case 5: _t->showBrainOnly(); break;
-        case 6: _t->showBoneOnly(); break;
-        case 7: _t->showSkinOnly(); break;
-        case 8: _t->showBrainPoolOnly(); break;
-        case 9: _t->showAllBrain(); break;
-        case 10: _t->removeBackground(); break;
-        case 11: _t->removeBone((*reinterpret_cast< unsigned short*(*)>(_a[1]))); break;
-        case 12: { int _r = _t->RegionGrow_1((*reinterpret_cast< unsigned short*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 13: _t->showInfo(); break;
-        case 14: { int _r = _t->getBrainVol();
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

@@ -1,16 +1,5 @@
 #include "brain.h"
 #include "core.h"
-#define BONE 3000
-#define SKIN 800
-#define BRAIN 1200
-#define BACKGROUND 0
-#define PI 3.1415926
-#define min(x,y) (x>y?y:x)
-
-//以下是vtk6.2.0以后使用API必须添加的宏
-struct point{
-	int x;
-	int y;};
 
 Brain::Brain(QWidget *parent)
 	: QMainWindow(parent)
