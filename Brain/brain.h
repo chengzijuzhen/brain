@@ -79,27 +79,7 @@ signals:
 		void fileClose();
 		void mousePressEvent(QMouseEvent *eve);
 
-		void showBrainOnly();
-		void showBoneOnly();
-		void showSkinOnly();
-		void showBrainPoolOnly();
-		void showAllBrain();
-		void removeBackground();
-		void removeBone(unsigned short * image);
-		int  RegionGrow_1(unsigned short *data,int width,int height);
-		void showInfo();
-		int getBrainVol();
-		//QLabel *label;
-
 private:
-	QLabel *label;
-	QLabel *label1;
-	QVTKWidget *widget;
-	QVTKWidget *widget2;
-	
-	//QVTKWidget *widget1;
-	vtkRenderer *ren;
-	vtkRenderer *ren2;
 	vtkDICOMImageReader *reader,*reader1;
 	vtkImageData *data;
 	vtkImageCast *readerImageCast;
@@ -113,6 +93,10 @@ private:
 	vtkOpenGLGPUVolumeRayCastMapper *glRayCastMapper;
 	vtkVolumeMapper *mapper;
 	vtkVolume *volume;
+	QVTKWidget *widget;
+	QVTKWidget *widget2;
+	vtkRenderer *ren;
+	vtkRenderer *ren2;
 	//Ui::QtTestClass ui;
 	QMenu *file;
 	QMenu *edit;
@@ -154,7 +138,7 @@ private:
 	
 	QAction *about;
 
-	int dim[3];
+	
 	unsigned short * copyOfImg;
 	void setupMenu();
 	void setupToolBar();
@@ -164,12 +148,8 @@ private:
 	void createEditAction();
 	void createSettingsAction();
 	void createToolAction();
-	void createHelpAction();
-
-	void showAll();
-	void freeMemory();
-
-	void restore();
+	void createHelpAction();	
+	
 	bh *biliShow; 
 };
 
