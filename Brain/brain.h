@@ -20,9 +20,9 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QTextEdit>
-#include <QtWidgets/QHBoxLayout>
-
-
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtGui/QMovie>
 
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
@@ -90,7 +90,7 @@ private:
 	QVTKWidget *widget2;
 
 	QWidget *moduleDockWidget;
-
+	QWidget *logDockWidget;
 	vtkImageData *data;
 	vtkDICOMImageReader *reader,*reader1;
 	vtkImageCast *readerImageCast;
@@ -149,7 +149,8 @@ private:
 	QDockWidget *dc_module;
 	QDockWidget *dc_log;
 
-	QVBoxLayout *layout;
+	QVBoxLayout *boxLayout;
+	QGridLayout *GridLayout;
 
 	//the buttons of the modules
 	QPushButton  *bt_showBrain;

@@ -4,7 +4,7 @@
 Brain::Brain(QWidget *parent)
 	: QMainWindow(parent)
 {
-	this->setMinimumSize(1000,600);
+	this->setMinimumSize(800,500);
 	createAction();
 	setupMenu();
 	setupToolBar();
@@ -38,9 +38,8 @@ Brain::~Brain()
 void Brain::setupDock()
 {
 	//module dock
-   dc_module=new QDockWidget(tr("Modules"),this);  
-    //dc_module->setFeatures(QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable); 
-   dc_module->setFeatures(QDockWidget::AllDockWidgetFeatures); 
+    dc_module=new QDockWidget(tr("Modules"),this);  
+    dc_module->setFeatures(QDockWidget::AllDockWidgetFeatures); 
     addDockWidget(Qt::LeftDockWidgetArea,dc_module);  
 
 	moduleDockWidget = new QWidget();
@@ -65,20 +64,59 @@ void Brain::setupDock()
 	bt_info=new QPushButton;  
     bt_info->setText(tr("Information"));  
 
-	layout =new QVBoxLayout();
-	layout->addWidget(bt_showBrain);
-	layout->addWidget(bt_showBone);
-	layout->addWidget(bt_showSkin);
-	layout->addWidget(bt_showBrainPool);
-	layout->addWidget(bt_removeBack);
-	layout->addWidget(bt_info);
-	layout->setSpacing(0);
-	moduleDockWidget->setLayout(layout);
+	boxLayout =new QVBoxLayout();
+	boxLayout->addWidget(bt_showBrain);
+	boxLayout->addWidget(bt_showBone);
+	boxLayout->addWidget(bt_showSkin);
+	boxLayout->addWidget(bt_showBrainPool);
+	boxLayout->addWidget(bt_removeBack);
+	boxLayout->addWidget(bt_info);
+	boxLayout->setSpacing(10);
+	moduleDockWidget->setLayout(boxLayout);
 	moduleDockWidget->show();
+
+//the background of dock widget
+/*
+	moduleDockWidget->setAutoFillBackground(true);
+	QPalette palette;
+	palette.setColor(QPalette::Background, QColor(192,253,123));
+	//palette.setBrush(QPalette::Background, QBrush(QPixmap(":/images/1.jpg")));
+	moduleDockWidget->setPalette(palette); 
+*/
+	
 	//log dock
 	dc_log=new QDockWidget(tr("Log messages"),this);  
-    dc_log->setFeatures(QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable);    
-    addDockWidget(Qt::LeftDockWidgetArea,dc_log);  
+    dc_log->setFeatures(QDockWidget::AllDockWidgetFeatures);  
+
+    logDockWidget = new QWidget();
+	dc_log->setWidget(logDockWidget); 
+
+	QLabel *label1 = new QLabel();  
+   	QLabel *label2 = new QLabel();  
+	QLabel *label3 = new QLabel();  
+	QLabel *label4 = new QLabel();  
+	QLabel *label5 = new QLabel();  
+	QLabel *label6 = new QLabel();  
+
+	label1->setText(" Errors: 2");  
+	label2->setText(" Warnings: 5");  
+	label3->setText(" Messages: 4"); 
+
+	label4->setPixmap(QPixmap(":Brain//Resources//clear.png"));
+	label5->setPixmap(QPixmap(":Brain//Resources//gotocell.png"));
+	label6->setPixmap(QPixmap(":Brain//Resources//new.png"));
+
+	GridLayout =new QGridLayout();
+	GridLayout->addWidget(label1,0,2);
+	GridLayout->addWidget(label2,1,2);
+	GridLayout->addWidget(label3,2,2);
+	GridLayout->addWidget(label4,0,1);
+	GridLayout->addWidget(label5,1,1);
+	GridLayout->addWidget(label6,2,1);
+	logDockWidget->setLayout(GridLayout);
+
+	addDockWidget(Qt::LeftDockWidgetArea,dc_log); 
+	logDockWidget->show();
 }
 
 
@@ -146,10 +184,10 @@ void Brain::createFileAction()
 	a_save->setIcon(QIcon(":Brain/Resources/save.png"));
 	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave(fileOpen())));
 
-	a_openExample=new QAction("open Sample Example",this);	
+	a_openExample=new QAction("Open Sample Example",this);	
 	connect(a_openExample, SIGNAL(triggered()), this, SLOT());
 
-	a_close=new QAction("Close",this);
+	a_close=new QAction("Close file",this);
 	a_close->setIcon(QIcon(":Brain/Resources/exit.png"));
 	connect(a_close, SIGNAL(triggered()), this, SLOT(fileClose()));
 
