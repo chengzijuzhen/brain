@@ -18,6 +18,8 @@
 #include <QtWidgets/QSplitter>
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QTextEdit>
 
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
@@ -83,6 +85,7 @@ public slots:
 private:
 	QVTKWidget *widget;
 	QVTKWidget *widget2;
+
 	vtkImageData *data;
 	vtkDICOMImageReader *reader,*reader1;
 	vtkImageCast *readerImageCast;
@@ -99,6 +102,9 @@ private:
 	int dim[3];
 	vtkRenderer *ren;
 	vtkRenderer *ren2;
+
+
+
 		//Ui::QtTestClass ui;
 	QMenu *file;
 	QMenu *edit;
@@ -137,10 +143,22 @@ private:
 	//help	
 	QAction *about;	
 
+
+	QDockWidget *dc_module;
+	QDockWidget *dc_log;
+
+	//the buttons of the modules
+	QPushButton  *bt_showBrain;
+	QPushButton  *bt_showBone;
+	QPushButton  *bt_showSkin;
+	QPushButton  *bt_showBrainPool;
+	QPushButton  *bt_removeBack;
+	QPushButton  *bt_info;
+
 	unsigned short * copyOfImg;
 	void setupMenu();
 	void setupToolBar();
-
+	void setupDock();
 	void createAction();
 	void createFileAction();
 	void createEditAction();
