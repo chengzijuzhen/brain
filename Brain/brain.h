@@ -112,8 +112,8 @@ private:
 	QAction *a_fileOpen;
 	QAction *a_save;
 	QAction *a_close;
-	QAction *exit;
-	QAction *downloadExample;
+	QAction *a_exit;
+	QAction *a_openExample;
 
 	//edit
 	QAction *showBrain;
@@ -131,10 +131,8 @@ private:
 	QAction *defaults;
 	QAction *appearance;
 	QAction *views;
-	QAction *display;
-	QAction *extension;
+	QAction *extensions;
 	QAction *shortcutKey;
-	QAction *layout;
 
 	//help	
 	QAction *about;	

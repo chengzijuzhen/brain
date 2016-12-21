@@ -4,16 +4,7 @@
 Brain::Brain(QWidget *parent)
 	: QMainWindow(parent)
 {
-	
-	//Qt::WindowFlags
-	//ui.setupUi(this);
 	this->setMinimumSize(800,600);
-	//QSplitter *splitterMain=new QSplitter(Qt::Horizontal,this);
-	//splitterMain->setHandleWidth(5);
-	//splitterMain->setStyleSheet("QSplitter::handle { background-color: RGB(255,0,0) }");
-	//label=new QLabel("splitter test",0);
-	//label1=new QLabel("hello",0);
-	//splitterMain->addWidget(label);
 	createAction();
 	setupMenu();
 	setupToolBar();
@@ -55,9 +46,9 @@ void Brain::setupMenu()
 
 	file->addAction(a_fileOpen);
 	file->addAction(a_save);
-	file->addAction(downloadExample);
+	file->addAction(a_openExample);
 	file->addAction(a_close);
-	file->addAction(exit);
+	file->addAction(a_exit);
 	//file->setIcon(QIcon());
 
 	edit->addAction(showBrain);
@@ -73,11 +64,9 @@ void Brain::setupMenu()
 	settings->addAction(defaults);
 	settings->addAction(appearance);
 	settings->addAction(views);
-	settings->addAction(display);
-	settings->addAction(extension);
+	settings->addAction(extensions);
 	settings->addAction(shortcutKey);
-	settings->addAction(layout);
-	
+
 	help->addAction(about);
 }
 
@@ -87,7 +76,7 @@ void Brain::setupToolBar()
 	filetoolbar->addAction(a_fileOpen);
 	filetoolbar->addAction(a_save);
 	filetoolbar->addAction(a_close);
-
+	filetoolbar->addAction(a_exit);
 	this->addToolBar(filetoolbar);
 }
 
@@ -108,16 +97,18 @@ void Brain::createFileAction()
 
 	a_save=new QAction("Save file",this);
 	a_save->setIcon(QIcon(":Brain/Resources/save.png"));
-	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave()));
+	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave(fileOpen())));
 
-	downloadExample=new QAction("Download Sample Example",this);	
-	//connect(, SIGNAL(triggered()), this, SLOT());
+	a_openExample=new QAction("open Sample Example",this);	
+	connect(a_openExample, SIGNAL(triggered()), this, SLOT());
 
 	a_close=new QAction("Close",this);
 	a_close->setIcon(QIcon(":Brain/Resources/exit.png"));
 	connect(a_close, SIGNAL(triggered()), this, SLOT(fileClose()));
 
-	exit=new QAction("Exit",this);	
+	a_exit=new QAction("Exit",this);	
+	a_exit->setIcon(QIcon(":Brain/Resources/find.png"));
+	connect(a_exit, SIGNAL(triggered()), this, SLOT(fileClose()));
 	//connect(, SIGNAL(triggered()), this, SLOT());
 }
 
@@ -137,7 +128,7 @@ void Brain::createEditAction(){
 	connect(showBrainPool,SIGNAL(triggered()),this,SLOT(showBrainPoolOnly()));
 
 	removeBack=new QAction("Remove Background",this);
-	connect(removeBack,SIGNAL(triggered()),this,SLOT(showAllBrain()));
+	connect(showBrainPool,SIGNAL(triggered()),this,SLOT(removeBackground()));
 
 	info=new QAction("Information",this);
 	connect(info,SIGNAL(triggered()),this,SLOT(showInfo()));
@@ -156,9 +147,7 @@ void Brain::createSettingsAction(){
 	defaults = new QAction("Defaults",this);
 	appearance = new QAction("Appearance",this);
 	views = new QAction("Views",this);
-	display = new QAction("Display",this);
-	extension = new QAction("Extension",this);
-	layout = new QAction("Layout",this);
+	extensions = new QAction("Extensions",this);
 	shortcutKey = new QAction("ShortcutKey",this);	
 }
 
