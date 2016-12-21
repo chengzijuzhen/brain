@@ -20,6 +20,9 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QTextEdit>
+#include <QtWidgets/QHBoxLayout>
+
+
 
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
@@ -86,6 +89,8 @@ private:
 	QVTKWidget *widget;
 	QVTKWidget *widget2;
 
+	QWidget *moduleDockWidget;
+
 	vtkImageData *data;
 	vtkDICOMImageReader *reader,*reader1;
 	vtkImageCast *readerImageCast;
@@ -103,9 +108,7 @@ private:
 	vtkRenderer *ren;
 	vtkRenderer *ren2;
 
-
-
-		//Ui::QtTestClass ui;
+	//Ui::QtTestClass ui;
 	QMenu *file;
 	QMenu *edit;
 	QMenu *tool;
@@ -143,9 +146,10 @@ private:
 	//help	
 	QAction *about;	
 
-
 	QDockWidget *dc_module;
 	QDockWidget *dc_log;
+
+	QVBoxLayout *layout;
 
 	//the buttons of the modules
 	QPushButton  *bt_showBrain;

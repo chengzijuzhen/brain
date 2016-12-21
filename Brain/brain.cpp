@@ -4,7 +4,7 @@
 Brain::Brain(QWidget *parent)
 	: QMainWindow(parent)
 {
-	this->setMinimumSize(800,600);
+	this->setMinimumSize(1000,600);
 	createAction();
 	setupMenu();
 	setupToolBar();
@@ -43,36 +43,38 @@ void Brain::setupDock()
    dc_module->setFeatures(QDockWidget::AllDockWidgetFeatures); 
     addDockWidget(Qt::LeftDockWidgetArea,dc_module);  
 
+	moduleDockWidget = new QWidget();
+	dc_module->setWidget(moduleDockWidget); 
+
 	// All of the buttons in module dock
 	bt_showBrain=new QPushButton;  
-    bt_showBrain->setText(tr("Show Brain"));  
-	dc_module->setWidget(bt_showBrain); 
+    bt_showBrain->setText(tr("Show Brain")); 
 
 	bt_showBone=new QPushButton;  
     bt_showBone->setText(tr("Show Bone")); 
-	dc_module->setWidget(bt_showBone); 
 
 	bt_showSkin=new QPushButton;  
     bt_showSkin->setText(tr("Show Skin"));  
-	dc_module->setWidget(bt_showSkin); 
 
 	bt_showBrainPool=new QPushButton;  
     bt_showBrainPool->setText(tr("Show Brain Pool"));  
-	dc_module->setWidget(bt_showBrainPool); 
 
 	bt_removeBack=new QPushButton;  
     bt_removeBack->setText(tr("Remove Background"));  
-	dc_module->setWidget(bt_removeBack); 
-
-	bt_removeBack=new QPushButton;  
-    bt_removeBack->setText(tr("Remove Background"));  
-	dc_module->setWidget(bt_removeBack); 
 
 	bt_info=new QPushButton;  
     bt_info->setText(tr("Information"));  
-	dc_module->setWidget(bt_info); 
 
-
+	layout =new QVBoxLayout();
+	layout->addWidget(bt_showBrain);
+	layout->addWidget(bt_showBone);
+	layout->addWidget(bt_showSkin);
+	layout->addWidget(bt_showBrainPool);
+	layout->addWidget(bt_removeBack);
+	layout->addWidget(bt_info);
+	layout->setSpacing(0);
+	moduleDockWidget->setLayout(layout);
+	moduleDockWidget->show();
 	//log dock
 	dc_log=new QDockWidget(tr("Log messages"),this);  
     dc_log->setFeatures(QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable);    
