@@ -182,8 +182,13 @@ void Brain::setupToolBar()
 	filetoolbar->addAction(a_fileOpen);
 	filetoolbar->addAction(a_save);
 	filetoolbar->addAction(a_close);
-	filetoolbar->addAction(a_exit);
-
+	filetoolbar->addAction(copy);
+	filetoolbar->addAction(cut);
+	filetoolbar->addAction(paste);
+	filetoolbar->addAction(printScreen);
+	filetoolbar->addAction(seeLog);
+	filetoolbar->addAction(view);
+	
 	//下拉框的标签
 	QLabel *lab = new QLabel();
 	lab->setText(" Views:"); 
@@ -201,16 +206,16 @@ void Brain::setupToolBar()
 	//搜索框
 	searchLineEdit = new QLineEdit();	
 	bt_search = new QPushButton();  
-    bt_search->setFixedSize(10,10);  
+    bt_search->setFixedSize(20,20);  
     bt_search->setCursor(Qt::PointingHandCursor);  
     bt_search->setStyleSheet("QPushButton{border-image:url(:Brain/Resources/find.png);"  
                              "background:transparent;cursor:pointer;}");  
 	
-	//防止文本框输入内容位于按钮之下
-	QMargins margins = searchLineEdit->textMargins();
+	
+	QMargins margins = searchLineEdit->textMargins();//防止文本框输入内容位于按钮之下
 	searchLineEdit->setTextMargins(margins.left(), margins.top(), bt_search->width(), margins.bottom());
 	searchLineEdit->setPlaceholderText(QStringLiteral("Search"));
- 
+	
 	QHBoxLayout *pSearchLayout = new QHBoxLayout();
 	pSearchLayout->addStretch();
 	pSearchLayout->addWidget(bt_search);
@@ -279,15 +284,19 @@ void Brain::createEditAction(){
 void Brain::createToolAction(){
 
 	printScreen = new QAction("Print Screen",this);
-	seeLog = new QAction("See Log Message",this);	
+	printScreen->setIcon(QIcon(":Brain/Resources/box.png"));
 
+	seeLog = new QAction("See Log Message",this);
+	seeLog->setIcon(QIcon(":Brain/Resources/about.png"));
 }
 
 void Brain::createSettingsAction(){
 
+
 	defaults = new QAction("Default",this);
 	appearance = new QAction("Appearance",this);
 	view = new QAction("View",this);
+	view->setIcon(QIcon(":Brain/Resources/build.png"));
 	extension = new QAction("Extension",this);
 	shortcutKey = new QAction("ShortcutKey",this);	
 }
