@@ -47,6 +47,12 @@ Brain::~Brain()
 
 }
 
+void Brain::clickButton()
+{
+
+	QMessageBox::information(this, "My Tittle", "Hello World!");
+}
+
 void Brain::setupDock()
 {
 	//module dock
@@ -58,23 +64,29 @@ void Brain::setupDock()
 	dc_module->setWidget(moduleDockWidget); 
 
 	// All of the buttons in module dock
-	bt_showBrain=new QPushButton;  
+	bt_showBrain=new QPushButton();  
     bt_showBrain->setText(tr("Show Brain")); 
-
-	bt_showBone=new QPushButton;  
+	connect(bt_showBrain,SIGNAL(clicked()),this,SLOT(fileOpen()));
+	
+	bt_showBone=new QPushButton();  
     bt_showBone->setText(tr("Show Bone")); 
+	connect(bt_showBone,SIGNAL(clicked()),this,SLOT(clickButton()));
 
-	bt_showSkin=new QPushButton;  
+	bt_showSkin=new QPushButton();  
     bt_showSkin->setText(tr("Show Skin"));  
+	connect(bt_showSkin,SIGNAL(clicked()),this,SLOT(clickButton()));
 
-	bt_showBrainPool=new QPushButton;  
-    bt_showBrainPool->setText(tr("Show Brain Pool"));  
+	bt_showBrainPool=new QPushButton();  
+    bt_showBrainPool->setText(tr("Show Brain Pool")); 
+	connect(bt_showBrainPool,SIGNAL(clicked()),this,SLOT(showBrainPoolOnly()));
 
-	bt_removeBack=new QPushButton;  
+	bt_removeBack=new QPushButton();  
     bt_removeBack->setText(tr("Remove Background"));  
+	connect(bt_showBrainPool,SIGNAL(clicked()),this,SLOT(removeBackground()));
 
-	bt_info=new QPushButton;  
+	bt_info=new QPushButton();  
     bt_info->setText(tr("Information"));  
+	connect(bt_info,SIGNAL(clicked()),this,SLOT(showInfo()));
 
 	boxLayout =new QVBoxLayout();
 	boxLayout->addWidget(bt_showBrain);
@@ -150,13 +162,12 @@ void Brain::setupMenu()
 
 	edit->addAction(cut);
 	edit->addAction(copy);
-	edit->addAction(paste);
-	
+	edit->addAction(paste);	
 
 	tool->addAction(printScreen);
 	tool->addAction(seeLog);
 	
-	settings->addAction(default);
+	settings->addAction(defaults);
 	settings->addAction(appearance);
 	settings->addAction(view);
 	settings->addAction(extension);
@@ -182,7 +193,7 @@ void Brain::createAction()
 	createToolAction();
 	createSettingsAction();
 	createHelpAction();
-	createModuleAction();
+//	createModuleAction();
 }
 
 void Brain::createFileAction()
@@ -193,7 +204,7 @@ void Brain::createFileAction()
 
 	a_save=new QAction("Save file",this);
 	a_save->setIcon(QIcon(":Brain/Resources/save.png"));
-	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave(fileClose())));
+	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave(fileSave())));
 
 	a_openExample=new QAction("Open Sample Example",this);	
 	a_openExample->setIcon(QIcon(":Brain/Resources/MC.png"));
@@ -221,29 +232,6 @@ void Brain::createEditAction(){
 	paste->setIcon(QIcon(":Brain/Resources/paste.png"));
 }
 
-void Brain::createModuleAction(){
-
-	showBrain=new QAction("Show Brain",this);
-	connect(showBrain,SIGNAL(triggered()),this,SLOT(showBrainOnly()));
-
-	showBone=new QAction("Show Bone",this);
-	connect(showBone,SIGNAL(triggered()),this,SLOT(showBoneOnly()));
-
-	showSkin=new QAction("Show Skin",this);
-	//showSkin->setEnabled(false);
-	connect(showSkin,SIGNAL(triggered()),this,SLOT(showSkinOnly()));
-
-	showBrainPool=new QAction("Show Ventricle",this);
-	connect(showBrainPool,SIGNAL(triggered()),this,SLOT(showBrainPoolOnly()));
-
-	removeBack=new QAction("Remove Background",this);
-	connect(showBrainPool,SIGNAL(triggered()),this,SLOT(removeBackground()));
-
-	info=new QAction("Information",this);
-	connect(info,SIGNAL(triggered()),this,SLOT(showInfo()));
-}
-
-
 void Brain::createToolAction(){
 
 	printScreen = new QAction("Print Screen",this);
@@ -253,7 +241,7 @@ void Brain::createToolAction(){
 
 void Brain::createSettingsAction(){
 
-	default = new QAction("Default",this);
+	defaults = new QAction("Default",this);
 	appearance = new QAction("Appearance",this);
 	view = new QAction("View",this);
 	extension = new QAction("Extension",this);
@@ -388,12 +376,12 @@ void Brain::fileOpen()
 
 void Brain::fileSave()
 {
-	/*
+	
 	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),".",tr("VTK files (*.vtk)"), 0, QFileDialog::DontUseNativeDialog);
 	
 	if(fileName.isNull())
 		return;
-	*/
+	
 }
 
 void Brain::fileClose()
@@ -586,7 +574,7 @@ void Brain::removeBone(unsigned short * image)
 	
 	
 	//showAll();
-	showSkin->setEnabled(true);
+	//showSkin->setEnabled(true);
 }
 
 

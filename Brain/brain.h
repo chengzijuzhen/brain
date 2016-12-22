@@ -22,6 +22,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtGui/QMovie>
+#include <QtWidgets/QMessageBox>
 
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
@@ -69,7 +70,7 @@
 
 class Brain : public QMainWindow
 {
-	Q_OBJECT
+	Q_OBJECT//加了这个才能用信号和槽
 
 public:
 	Brain(QWidget *parent = 0);
@@ -78,7 +79,7 @@ public:
 signals:
 	void canShowSkin();
 
-public slots:
+private slots:
 	void fileOpen();
 	void fileSave();
 	void fileClose();
@@ -96,7 +97,7 @@ public slots:
 	void restore();
 	void showAll();
 	void freeMemory();
-
+	void clickButton();
 
 private:
 	QVTKWidget *widget;
@@ -147,7 +148,7 @@ private:
 	QAction *seeLog;
 
 	//setting
-	QAction *default;
+	QAction *defaults;
 	QAction *appearance;
 	QAction *view;
 	QAction *extension;
@@ -161,14 +162,6 @@ private:
 
 	QVBoxLayout *boxLayout;
 	QGridLayout *GridLayout;
-
-	//modules
-	QAction *showBrain;
-	QAction *showBone;
-	QAction *showSkin;
-	QAction *showBrainPool;
-	QAction *removeBack;
-	QAction *info;
 
 	//the buttons of the modules
 	QPushButton  *bt_showBrain;
@@ -188,7 +181,7 @@ private:
 	void createSettingsAction();
 	void createToolAction();
 	void createHelpAction();	
-	void createModuleAction();
+//	void createModuleAction();
 	bh *biliShow; 
 
 };
