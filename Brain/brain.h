@@ -5,7 +5,6 @@
 #define vtkRenderingVolume_AUTOINIT 1(vtkRenderingVolumeOpenGL)
 
 #include "ui_brain.h"
-#include "core.h"
 #include "bh.h"
 
 #include <QtWidgets/QMainWindow>
@@ -80,10 +79,24 @@ signals:
 	void canShowSkin();
 
 public slots:
-		void fileOpen();
-		void fileSave();
-		void fileClose();
-		void mousePressEvent(QMouseEvent *eve);
+	void fileOpen();
+	void fileSave();
+	void fileClose();
+	void mousePressEvent(QMouseEvent *eve);
+	void showBrainOnly();
+	void showBoneOnly();
+	void showSkinOnly();
+	void showBrainPoolOnly();
+	void showAllBrain();
+	void removeBackground();
+	void removeBone(unsigned short * image);
+	int  RegionGrow_1(unsigned short *data,int width,int height);
+	void showInfo();
+	int getBrainVol();
+	void restore();
+	void showAll();
+	void freeMemory();
+
 
 private:
 	QVTKWidget *widget;
@@ -170,5 +183,8 @@ private:
 	void createSettingsAction();
 	void createToolAction();
 	void createHelpAction();	
+
+	bh *biliShow; 
+
 };
 #endif // BRAIN_H
