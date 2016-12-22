@@ -1,4 +1,4 @@
 # git ignore file
 Brain.opensdf 
-Brain\x64\Debug\*
-Brain\GeneratedFiles\Debug\*
+Brain\\x64\\Debug\\*
+Brain\\GeneratedFiles\\Debug\\*

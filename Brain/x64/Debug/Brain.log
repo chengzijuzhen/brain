@@ -1,4 +1,4 @@
-﻿生成启动时间为 2016/12/22 21:34:37。
+﻿生成启动时间为 2016/12/22 22:17:06。
      1>项目“C:\Users\Kuangyan\Desktop\Brain\Brain\Brain.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
          正在创建“x64\Debug\Brain.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
@@ -24,4 +24,4 @@
 
 生成成功。
 
-已用时间 00:00:07.44
+已用时间 00:00:06.66

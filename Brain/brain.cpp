@@ -17,6 +17,7 @@ Brain::Brain(QWidget *parent)
 	: QMainWindow(parent)
 {
 	this->setMinimumSize(800,500);
+	this->setWindowIcon(QIcon(":Brain//Resources//build.png"));
 	createAction();
 	setupMenu();
 	setupToolBar();
@@ -286,7 +287,7 @@ void Brain::createToolAction(){
 	printScreen = new QAction("Print Screen",this);
 	printScreen->setIcon(QIcon(":Brain/Resources/box.png"));
 
-	seeLog = new QAction("See Log Message",this);
+	seeLog = new QAction("Log Message",this);
 	seeLog->setIcon(QIcon(":Brain/Resources/about.png"));
 }
 
@@ -296,7 +297,7 @@ void Brain::createSettingsAction(){
 	defaults = new QAction("Default",this);
 	appearance = new QAction("Appearance",this);
 	view = new QAction("View",this);
-	view->setIcon(QIcon(":Brain/Resources/build.png"));
+	view->setIcon(QIcon(":Brain/Resources/edit.png"));
 	extension = new QAction("Extension",this);
 	shortcutKey = new QAction("ShortcutKey",this);	
 }

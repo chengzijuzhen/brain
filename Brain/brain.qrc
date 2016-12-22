@@ -11,12 +11,14 @@
         <file>Resources/exit.png</file>
         <file>Resources/find.png</file>
         <file>Resources/gotocell.png</file>
-        <file>Resources/icon.png</file>
         <file>Resources/MC.png</file>
-        <file>Resources/new.png</file>
+        <file>Resources/log.png</file>
         <file>Resources/open.png</file>
         <file>Resources/paste.png</file>
         <file>Resources/plane.png</file>
         <file>Resources/save.png</file>
+        <file>Resources/warning.png</file>
+        <file>Resources/message.png</file>
+        <file>Resources/photo.png</file>
     </qresource>
 </RCC>
