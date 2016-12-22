@@ -21,8 +21,10 @@
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>
-#include <QtGui/QMovie>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
@@ -97,7 +99,8 @@ private slots:
 	void restore();
 	void showAll();
 	void freeMemory();
-	void clickButton();
+	void search();
+//	void clickButton();
 
 private:
 	QVTKWidget *widget;
@@ -122,14 +125,21 @@ private:
 	vtkRenderer *ren;
 	vtkRenderer *ren2;
 
-	//Ui::QtTestClass ui;
+	//menu
 	QMenu *file;
 	QMenu *edit;
 	QMenu *tool;
 	QMenu *settings;
 	QMenu *help;
 
+	//工具栏
 	QToolBar *filetoolbar;
+
+	QLineEdit *searchLineEdit;
+	//搜索框
+	QPushButton *bt_search;
+	//下拉框
+	QComboBox * viewBox;
 
 	//file
 	QAction *a_fileOpen;
@@ -181,7 +191,6 @@ private:
 	void createSettingsAction();
 	void createToolAction();
 	void createHelpAction();	
-//	void createModuleAction();
 	bh *biliShow; 
 
 };

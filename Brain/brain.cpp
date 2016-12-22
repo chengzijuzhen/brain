@@ -46,13 +46,13 @@ Brain::~Brain()
 {
 
 }
-
+/*
 void Brain::clickButton()
 {
 
 	QMessageBox::information(this, "My Tittle", "Hello World!");
 }
-
+*/
 void Brain::setupDock()
 {
 	//module dock
@@ -66,15 +66,15 @@ void Brain::setupDock()
 	// All of the buttons in module dock
 	bt_showBrain=new QPushButton();  
     bt_showBrain->setText(tr("Show Brain")); 
-	connect(bt_showBrain,SIGNAL(clicked()),this,SLOT(fileOpen()));
+	connect(bt_showBrain,SIGNAL(clicked()),this,SLOT(showBrainOnly()));
 	
 	bt_showBone=new QPushButton();  
     bt_showBone->setText(tr("Show Bone")); 
-	connect(bt_showBone,SIGNAL(clicked()),this,SLOT(clickButton()));
+	connect(bt_showBone,SIGNAL(clicked()),this,SLOT(showBoneOnly()));
 
 	bt_showSkin=new QPushButton();  
     bt_showSkin->setText(tr("Show Skin"));  
-	connect(bt_showSkin,SIGNAL(clicked()),this,SLOT(clickButton()));
+	connect(bt_showSkin,SIGNAL(clicked()),this,SLOT(showSkinOnly()));
 
 	bt_showBrainPool=new QPushButton();  
     bt_showBrainPool->setText(tr("Show Brain Pool")); 
@@ -122,8 +122,8 @@ void Brain::setupDock()
 	QLabel *label5 = new QLabel();  
 	QLabel *label6 = new QLabel();  
 
-	label1->setText(" Errors: 2");  
-	label2->setText(" Warnings: 5");  
+	label1->setText(" Errors: 0");  
+	label2->setText(" Warnings: 2");  
 	label3->setText(" Messages: 4"); 
 
 	label4->setPixmap(QPixmap(":Brain//Resources//clear.png"));
@@ -183,9 +183,53 @@ void Brain::setupToolBar()
 	filetoolbar->addAction(a_save);
 	filetoolbar->addAction(a_close);
 	filetoolbar->addAction(a_exit);
-	this->addToolBar(filetoolbar);
-}
 
+	//下拉框的标签
+	QLabel *lab = new QLabel();
+	lab->setText(" Views:"); 
+	filetoolbar->addWidget(lab);
+
+	//下拉框
+	viewBox =new QComboBox();
+	viewBox->addItem(QWidget::tr("Module"));  
+    viewBox->addItem(QWidget::tr("Log message"));  
+	viewBox->addItem(QWidget::tr("Download Samples")); 
+	filetoolbar->addWidget(viewBox);
+
+	this->addToolBar(filetoolbar);
+
+	//搜索框
+	searchLineEdit = new QLineEdit();	
+	bt_search = new QPushButton();  
+    bt_search->setFixedSize(10,10);  
+    bt_search->setCursor(Qt::PointingHandCursor);  
+    bt_search->setStyleSheet("QPushButton{border-image:url(:Brain/Resources/find.png);"  
+                             "background:transparent;cursor:pointer;}");  
+	
+	//防止文本框输入内容位于按钮之下
+	QMargins margins = searchLineEdit->textMargins();
+	searchLineEdit->setTextMargins(margins.left(), margins.top(), bt_search->width(), margins.bottom());
+	searchLineEdit->setPlaceholderText(QStringLiteral("Search"));
+ 
+	QHBoxLayout *pSearchLayout = new QHBoxLayout();
+	pSearchLayout->addStretch();
+	pSearchLayout->addWidget(bt_search);
+	pSearchLayout->setSpacing(0);
+	pSearchLayout->setContentsMargins(0, 0, 0, 0);
+	searchLineEdit->setLayout(pSearchLayout); 
+	connect(bt_search, SIGNAL(clicked(bool)), this, SLOT(search()));
+	filetoolbar->addWidget(searchLineEdit);
+
+	
+}
+void Brain::search()
+{
+    QString strText = searchLineEdit->text();
+    if (!strText.isEmpty())
+    {
+        QMessageBox::information(this, QStringLiteral("Search"), QStringLiteral("Result:  %1").arg(strText));
+    }
+}
 void Brain::createAction()
 {
 	createFileAction();
