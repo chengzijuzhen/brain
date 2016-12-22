@@ -138,22 +138,19 @@ private:
 	QAction *a_openExample;
 
 	//edit
-	QAction *showBrain;
-	QAction *showBone;
-	QAction *showSkin;
-	QAction *showBrainPool;
-	QAction *removeBack;
-	QAction *info;
+	QAction *cut;
+	QAction *copy;
+	QAction *paste;
 
 	//tool
 	QAction *printScreen;
 	QAction *seeLog;
 
 	//setting
-	QAction *defaults;
+	QAction *default;
 	QAction *appearance;
-	QAction *views;
-	QAction *extensions;
+	QAction *view;
+	QAction *extension;
 	QAction *shortcutKey;
 
 	//help	
@@ -164,6 +161,14 @@ private:
 
 	QVBoxLayout *boxLayout;
 	QGridLayout *GridLayout;
+
+	//modules
+	QAction *showBrain;
+	QAction *showBone;
+	QAction *showSkin;
+	QAction *showBrainPool;
+	QAction *removeBack;
+	QAction *info;
 
 	//the buttons of the modules
 	QPushButton  *bt_showBrain;
@@ -183,7 +188,7 @@ private:
 	void createSettingsAction();
 	void createToolAction();
 	void createHelpAction();	
-
+	void createModuleAction();
 	bh *biliShow; 
 
 };

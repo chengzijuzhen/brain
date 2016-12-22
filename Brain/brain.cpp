@@ -148,20 +148,18 @@ void Brain::setupMenu()
 	file->addAction(a_close);
 	file->addAction(a_exit);
 
-	edit->addAction(showBrain);
-	edit->addAction(showBone);
-	edit->addAction(showSkin);
-	edit->addAction(showBrainPool);
-	edit->addAction(removeBack);
-	edit->addAction(info);
+	edit->addAction(cut);
+	edit->addAction(copy);
+	edit->addAction(paste);
+	
 
 	tool->addAction(printScreen);
 	tool->addAction(seeLog);
 	
-	settings->addAction(defaults);
+	settings->addAction(default);
 	settings->addAction(appearance);
-	settings->addAction(views);
-	settings->addAction(extensions);
+	settings->addAction(view);
+	settings->addAction(extension);
 	settings->addAction(shortcutKey);
 
 	help->addAction(about);
@@ -184,6 +182,7 @@ void Brain::createAction()
 	createToolAction();
 	createSettingsAction();
 	createHelpAction();
+	createModuleAction();
 }
 
 void Brain::createFileAction()
@@ -194,10 +193,11 @@ void Brain::createFileAction()
 
 	a_save=new QAction("Save file",this);
 	a_save->setIcon(QIcon(":Brain/Resources/save.png"));
-	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave(fileOpen())));
+	connect(a_save, SIGNAL(triggered()), this, SLOT(fileSave(fileClose())));
 
 	a_openExample=new QAction("Open Sample Example",this);	
-	connect(a_openExample, SIGNAL(triggered()), this, SLOT());
+	a_openExample->setIcon(QIcon(":Brain/Resources/MC.png"));
+	connect(a_openExample, SIGNAL(triggered()), this, SLOT(fileOpen()));
 
 	a_close=new QAction("Close file",this);
 	a_close->setIcon(QIcon(":Brain/Resources/exit.png"));
@@ -210,6 +210,18 @@ void Brain::createFileAction()
 }
 
 void Brain::createEditAction(){
+
+	copy=new QAction("Copy",this);
+	copy->setIcon(QIcon(":Brain/Resources/copy.png"));
+
+	cut=new QAction("Cut",this);
+	cut->setIcon(QIcon(":Brain/Resources/cut.png"));
+
+	paste=new QAction("Paste",this);
+	paste->setIcon(QIcon(":Brain/Resources/paste.png"));
+}
+
+void Brain::createModuleAction(){
 
 	showBrain=new QAction("Show Brain",this);
 	connect(showBrain,SIGNAL(triggered()),this,SLOT(showBrainOnly()));
@@ -235,16 +247,16 @@ void Brain::createEditAction(){
 void Brain::createToolAction(){
 
 	printScreen = new QAction("Print Screen",this);
-	seeLog = new QAction("See Log Messages",this);	
+	seeLog = new QAction("See Log Message",this);	
 
 }
 
 void Brain::createSettingsAction(){
 
-	defaults = new QAction("Defaults",this);
+	default = new QAction("Default",this);
 	appearance = new QAction("Appearance",this);
-	views = new QAction("Views",this);
-	extensions = new QAction("Extensions",this);
+	view = new QAction("View",this);
+	extension = new QAction("Extension",this);
 	shortcutKey = new QAction("ShortcutKey",this);	
 }
 
