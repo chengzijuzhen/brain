@@ -43,17 +43,13 @@ Brain::Brain(QWidget *parent)
 	this->setCentralWidget(mainSplitter);
 }
 
-Brain::~Brain()
-{
+Brain::~Brain(){}
 
-}
-/*
 void Brain::clickButton()
 {
-
 	QMessageBox::information(this, "My Tittle", "Hello World!");
 }
-*/
+
 void Brain::setupDock()
 {
 	//module dock
@@ -83,7 +79,7 @@ void Brain::setupDock()
 
 	bt_removeBack=new QPushButton();  
     bt_removeBack->setText(tr("Remove Background"));  
-	connect(bt_showBrainPool,SIGNAL(clicked()),this,SLOT(removeBackground()));
+	connect(bt_removeBack,SIGNAL(clicked()),this,SLOT(removeBackground()));
 
 	bt_info=new QPushButton();  
     bt_info->setText(tr("Information"));  
@@ -124,8 +120,8 @@ void Brain::setupDock()
 	QLabel *label6 = new QLabel();  
 
 	label1->setText(" Errors: 0");  
-	label2->setText(" Warnings: 2");  
-	label3->setText(" Messages: 4"); 
+	label2->setText(" Warnings: 0");  
+	label3->setText(" Messages: 0"); 
 
 	label4->setPixmap(QPixmap(":Brain//Resources//clear.png"));
 	label5->setPixmap(QPixmap(":Brain//Resources//gotocell.png"));
@@ -243,7 +239,6 @@ void Brain::createAction()
 	createToolAction();
 	createSettingsAction();
 	createHelpAction();
-//	createModuleAction();
 }
 
 void Brain::createFileAction()
@@ -286,27 +281,237 @@ void Brain::createToolAction(){
 
 	printScreen = new QAction("Print Screen",this);
 	printScreen->setIcon(QIcon(":Brain/Resources/box.png"));
+	connect(printScreen, SIGNAL(triggered()), this, SLOT(createShortcutKeyDialog()));
 
 	seeLog = new QAction("Log Message",this);
 	seeLog->setIcon(QIcon(":Brain/Resources/about.png"));
+	connect(seeLog, SIGNAL(triggered()), this, SLOT(createPrintScreenDialog()));
 }
 
 void Brain::createSettingsAction(){
 
-
 	defaults = new QAction("Default",this);
+	connect(defaults, SIGNAL(triggered()), this, SLOT((createDefaultsDialog())));
+
 	appearance = new QAction("Appearance",this);
+	connect(appearance, SIGNAL(triggered()), this, SLOT((clickButton())));
+
 	view = new QAction("View",this);
 	view->setIcon(QIcon(":Brain/Resources/edit.png"));
+
 	extension = new QAction("Extension",this);
 	shortcutKey = new QAction("ShortcutKey",this);	
 }
 
 void Brain::createHelpAction(){
-
 	about = new QAction("About Brain.exe",this);
 }
 
+
+void Brain::createDefaultsDialog(){
+    QDialog *dialog = new QDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Default Settings"));
+	dialog->setMinimumSize(400,200);
+
+	QWidget *part =new QWidget();
+
+	QLabel *label1=new QLabel();
+	label1->setText(" File Location: "); 
+
+	QLineEdit *lineEdit = new QLineEdit();
+	QToolButton *bt_fileLocation = new QToolButton();  
+	bt_fileLocation->setText(tr("Browser")); 
+	QCheckBox *checkbox1 = new QCheckBox("Show heap status",dialog);  
+	QCheckBox *checkbox2 = new QCheckBox("Always run in background",dialog);  
+	QCheckBox *checkbox3 = new QCheckBox("Build automatically",dialog);  
+	QCheckBox *checkbox4 = new QCheckBox("Refresh on access",dialog);
+
+	//布局管理
+	QVBoxLayout *allLayout=new QVBoxLayout();
+	QHBoxLayout *partLayout=new QHBoxLayout();
+
+	partLayout->addWidget(lineEdit);
+	partLayout->addWidget(bt_fileLocation);
+
+	allLayout->addWidget(label1);
+	allLayout->addWidget(part);
+	allLayout->addWidget(checkbox1);
+	allLayout->addWidget(checkbox2);
+	allLayout->addWidget(checkbox3);
+	allLayout->addWidget(checkbox4);
+
+	dialog->setLayout(allLayout);
+	part->setLayout(partLayout);
+		
+	dialog->show();
+}
+
+void Brain::createAppearanceDialog(){
+	 QDialog *dialog = new QDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Appearance Settings"));
+	dialog->setMinimumSize(400,200);
+
+	QWidget *part1 =new QWidget();
+	QWidget *part2 =new QWidget();
+
+	QLabel *label1=new QLabel();
+	label1->setText("Foreground color: "); 
+	QLabel *label2=new QLabel();
+	label2->setText("Background color: ");
+
+	QRadioButton *radio0 = new QRadioButton("Black", this);
+	radio0->setChecked(2);
+	QRadioButton *radio1 = new QRadioButton("Red", this);  
+	QRadioButton *radio2 = new QRadioButton("Yellow", this);  
+	QRadioButton *radio3 = new QRadioButton("Green", this);  
+	
+	QRadioButton *radio4 = new QRadioButton("Write", this); 
+	radio4->setChecked(1);
+	QRadioButton *radio5 = new QRadioButton("Black", this);  	
+
+	//布局管理
+	QVBoxLayout *allLayout=new QVBoxLayout();
+	QHBoxLayout *partLayout1=new QHBoxLayout();
+	QHBoxLayout *partLayout2=new QHBoxLayout();
+
+	partLayout1->addWidget(radio0);
+	partLayout1->addWidget(radio1);
+	partLayout1->addWidget(radio2);
+	partLayout1->addWidget(radio3);
+
+	part1->setLayout(partLayout1);
+
+	partLayout2->addWidget(radio4);
+	partLayout2->addWidget(radio5);
+
+	part2->setLayout(partLayout2);
+
+	allLayout->addWidget(label1);
+	allLayout->addWidget(part1);
+	allLayout->addWidget(label2);
+	allLayout->addWidget(part2);
+
+	dialog->setLayout(allLayout);
+			
+	dialog->show();
+
+}
+
+void Brain::createExtensionDialog(){
+	QDialog *dialog = new QDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Extension Settings"));
+	dialog->setMinimumSize(400,200);
+
+	QWidget *part1 =new QWidget();
+	QWidget *part2 =new QWidget();
+
+	QLabel *label1=new QLabel();
+	label1->setText(" Extension: "); 
+
+	QLabel *label2=new QLabel();
+	label2->setText(" Module_extension "); 
+
+	QLabel *label3=new QLabel();
+	label3->setText(" Print_screen_add_in"); 
+
+	QToolButton *bt_extension1 = new QToolButton();
+	QToolButton *bt_extension2 = new QToolButton();  
+	bt_extension1->setText(tr("Edit")); 
+	bt_extension2->setText(tr("Delete")); 
+
+	QToolButton *bt_extension3 = new QToolButton();
+	QToolButton *bt_extension4 = new QToolButton();  
+	bt_extension3->setText(tr("Edit")); 
+	bt_extension4->setText(tr("Delete")); 
+
+	QToolButton *bt_extension5 = new QToolButton();  
+	bt_extension5->setText(tr("Add")); 
+
+	QVBoxLayout *allLayout=new QVBoxLayout();
+	QHBoxLayout *partLayout1=new QHBoxLayout();
+	QHBoxLayout *partLayout2=new QHBoxLayout();
+
+	partLayout1->addWidget(label2);
+	partLayout1->addWidget(bt_extension1);
+	partLayout1->addWidget(bt_extension2);
+
+	partLayout2->addWidget(label3);
+	partLayout2->addWidget(bt_extension3);
+	partLayout2->addWidget(bt_extension4);
+
+	allLayout->addWidget(label1);
+	allLayout->addWidget(part1);
+	allLayout->addWidget(part2);
+	allLayout->addWidget(bt_extension5);
+	
+	dialog->setLayout(allLayout);
+	part1->setLayout(partLayout1);
+	part2->setLayout(partLayout2);
+	dialog->show();
+
+}
+void Brain::createShortcutKeyDialog(){
+	QDialog *dialog = new QDialog;
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowTitle(tr("Shortcut Settings"));
+	dialog->setMinimumSize(400,200);
+
+	QWidget *part1 =new QWidget();
+	QWidget *part2 =new QWidget();
+
+	QLabel *label1=new QLabel();
+	label1->setText(" Shortcut: "); 
+
+	QLabel *label2=new QLabel();
+	label2->setText("Save: Ctrl + S"); 
+
+	QLabel *label3=new QLabel();
+	label3->setText(" Print Screen: Ctrl + P"); 
+
+	QToolButton *bt_extension1 = new QToolButton();
+	QToolButton *bt_extension2 = new QToolButton();  
+	bt_extension1->setText(tr("Edit")); 
+	bt_extension2->setText(tr("Delete")); 
+
+	QToolButton *bt_extension3 = new QToolButton();
+	QToolButton *bt_extension4 = new QToolButton();  
+	bt_extension3->setText(tr("Edit")); 
+	bt_extension4->setText(tr("Delete")); 
+
+	QToolButton *bt_extension5 = new QToolButton();  
+	bt_extension5->setText(tr("Add")); 
+
+	QVBoxLayout *allLayout=new QVBoxLayout();
+	QHBoxLayout *partLayout1=new QHBoxLayout();
+	QHBoxLayout *partLayout2=new QHBoxLayout();
+
+	partLayout1->addWidget(label2);
+	partLayout1->addWidget(bt_extension1);
+	partLayout1->addWidget(bt_extension2);
+
+	partLayout2->addWidget(label3);
+	partLayout2->addWidget(bt_extension3);
+	partLayout2->addWidget(bt_extension4);
+
+	allLayout->addWidget(label1);
+	allLayout->addWidget(part1);
+	allLayout->addWidget(part2);
+	allLayout->addWidget(bt_extension5);
+	
+	dialog->setLayout(allLayout);
+	part1->setLayout(partLayout1);
+	part2->setLayout(partLayout2);
+	dialog->show();
+
+}
+void Brain::createPrintScreenDialog(){
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Save Screenshot"),".",tr("VTK files (*.png)"));
+	if(fileName.isNull())
+	return;
+}
 
 void Brain::fileOpen()
 {
@@ -314,6 +519,7 @@ void Brain::fileOpen()
 	//if(fileName.isNull())
 		//return;
 
+	//vtk读取dicom文件
 	reader = vtkDICOMImageReader::New();
 	reader->SetDataByteOrderToLittleEndian();
 	reader->SetDirectoryName("C://Users//Kuangyan//Desktop//MRI-T1");
@@ -430,12 +636,9 @@ void Brain::fileOpen()
 
 void Brain::fileSave()
 {
-	
 	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),".",tr("VTK files (*.vtk)"), 0, QFileDialog::DontUseNativeDialog);
-	
 	if(fileName.isNull())
-		return;
-	
+		return;	
 }
 
 void Brain::fileClose()
@@ -449,45 +652,51 @@ void Brain::mousePressEvent(QMouseEvent *eve)
 	statusBar()->showMessage(QString("%1,%2").arg(QString::number(eve->x()),QString::number(eve->y())),5000);
 }
 
+//显示脑实质的函数
 void Brain::showBrainOnly()
 {
 	restore();
-	//显示大脑的函数
 
 	unsigned short *imgData=((unsigned short *)reader->GetOutput()->GetScalarPointer());
-	int height=dim[0],width=dim[1],level=dim[2];
+	int height = dim[0];
+	int width = dim[1];
+	int level = dim[2];
 
-	int average=1100;
-	int threshold=100;
+	int average = 1100;//种子像素
+	int threshold = 100;//阈值
+	//如果所考虑的像素与种子像素灰度值差的绝对值小于阈值，则将该像素包括进种子像素所在区域
+		
 	bool index=1;
 
-	bool *flag=new bool [width*height*level];
-	memset(flag,0,width*height*level*sizeof(bool));
-
+	//种子标记
+	bool *flag = new bool [width * height * level];//用来记录该像素是否属于种子区域
+	memset(flag, 0, width * height * level * sizeof(bool));//memset是以字节为单位，初始化内存块。把每个数组单元初始化成任何想要的值。这里初始化为0。
+	
 	//将image041，初始化
-	unsigned short *p = imgData+10*width*height;
-	flag[10*width*height+128*width+128]=1;
-	cout<<imgData[10*width*height+128*width+128]<<endl;
-	int count=0;
+	unsigned short *p = imgData + 10 * width * height;
+	flag[10 * width * height + 128 * width + 128] = 1;
+	//cout << imgData[10 * width * height + 128 * width + 128] << endl;
+
+	
+	int count=0;//记录种子像素个数
 
 	while(index)
 	{
 		index=0;
-		for (int i=1;i<height;i++)
+		for (int i = 1;i < height;i++)
 		{
-			for (int j=1;j<width-1;j++)
+			for (int j = 1;j < width - 1;j++)
 			{
-				if (flag[10*width*height+i*width+j])
+				if (flag[10 * width * height + i * width + j])
 				{
-					for(int u=-1;u<2;u++)
+					for(int u = -1;u < 2;u++)
 					{
-						for(int v=-1;v<2;v++)
+						for(int v = -1;v < 2;v++)
 						{
-							if(flag[10*width*height+(i+u)*width+j+v]==0 && abs(average-imgData[10*width*height+(i+u)*width+j+v])<threshold)
-							{
-								flag[10*width*height+(i+u)*width+j+v]=1;
-								//data[10*width*height+(i+u)*width+j+v]=1200;
-								index=1;
+							if(flag[10 * width * height + (i+u) * width + j + v] == 0 && abs(average - imgData[10 * width * height + (i + u) * width + j + v]) < threshold)
+							{   //如果所考虑的像素与种子像素灰度值差的绝对值小于阈值，则将该像素包括进种子像素所在区域
+								flag[10 * width * height + (i + u) * width + j + v] = 1;
+								index = 1;
 								count++;
 							}
 						}
@@ -502,26 +711,24 @@ void Brain::showBrainOnly()
 	while(index)
 	{
 		index=0;
-
-		for (int k=5;k<44;k++)
+		for (int k = 5; k < 44; k++)
 		{
-			for(int i=1;i<height-1;i++)
+			for(int i = 1; i < height - 1; i++)
 			{
-				for(int j=1;j<width-1;j++)
+				for(int j = 1; j < width - 1; j++)
 				{
-					if(flag[k*width*height+i*width+j])
+					if(flag[k * width * height + i * width + j])
 					{
-						for(int u=-1;u<2;u++)
+						for(int u = -1; u < 2; u++)
 						{
-							for(int v=-1;v<2;v++)
+							for(int v = -1; v < 2; v++)
 							{
-								for (int w=-1;w<2;w++)
+								for (int w = -1; w < 2; w++)
 								{
 									if(flag[(k+w)*width*height+(i+u)*width+j+v]==0 && abs(average-imgData[(k+w)*width*height+(i+u)*width+j+v])<threshold)
 									{
-										flag[(k+w)*width*height+(i+u)*width+j+v]=1;
-										//data[(k+w)*width*height+(i+u)*width+j+v]=average;
-										index=1;
+										flag[(k+w)*width*height+(i+u)*width+j+v] = 1;
+										index = 1;
 									}
 								}
 							}
@@ -533,24 +740,26 @@ void Brain::showBrainOnly()
 
 	}
 
-	for (int k=0;k<level;k++)
+	for (int k = 0; k < level; k++)
 	{
-		for (int i=0;i<height;i++)
+		for (int i = 0; i < height; i++)
 		{
-			for (int j=0;j<width;j++)
+			for (int j = 0; j < width; j++)
 			{
-				if (flag[k*height*width+i*width+j]==0)
+				//如果该像素没有种子标记，将其像素值置为0
+				////如果该像素有种子标记，则置为1200
+				if (flag[k * height * width + i * width + j] == 0)
 				{
-					imgData[k*height*width+i*width+j]=0;
+					imgData[k * height * width + i * width + j] = 0;
 				}
 				else
 				{
-					imgData[k*height*width+i*width+j]=1200;
+					imgData [k * height * width + i * width + j] = 1200;
 				}
 			}
 		}
 	}
-
+	//显示分割后的图像
 	showAll();
 }
 
@@ -681,27 +890,14 @@ void Brain::showSkinOnly()
 						y=centerY+r*sin(theta);
 					}
 
-					int dr=1;
-					/*
-					int x0=centerX+(r+dr)*cos(theta);
-					int y0=centerY+(r+dr)*sin(theta);
-					while (image[k*width*height+y0*width+x0]!=BACKGROUND)
-					{
-						image[k*width*height+y0*width+x0]=SKIN;
-						++dr;
-						x0=centerX+(r+dr)*cos(theta);
-						y0=centerY+(r+dr)*sin(theta);
-					}
-					*/
-					
+					int dr=1;				
 					int x0=centerX+(r+1)*cos(theta);
 					int y0=centerY+(r+1)*sin(theta);
 					image[k*width*height+y0*width+x0]=SKIN;
 
 					x0=centerX+(r+2)*cos(theta);
 					y0=centerY+(r+2)*sin(theta);
-					image[k*width*height+y0*width+x0]=SKIN;
-					
+					image[k*width*height+y0*width+x0]=SKIN;					
 
 					while(r>=0)
 					{
@@ -710,7 +906,6 @@ void Brain::showSkinOnly()
 						x=centerX+r*cos(theta);
 						y=centerY+r*sin(theta);
 					}
-
 				}
 				else
 				{
@@ -720,12 +915,7 @@ void Brain::showSkinOnly()
 			
 		}
 	}
-
-	delete [] dest;
-	//memcpy(((unsigned short *)reader->GetOutput()->GetScalarPointer()),dest,2*dim[0]*dim[1]*dim[2]);
-	showAll();
-	
-	
+	showAll();	
 }
 
 void Brain::showInfo()
@@ -749,29 +939,19 @@ void Brain::showInfo()
 	biliShow=new bh();
 	biliShow->bili->setText(QString::number(bHbili*100)+"%");
 	biliShow->show();
-	
-	
-
 }
 
 void Brain::showAll()
 {
 	reader->Update();
 
-
 	unsigned short *image=(unsigned short *)(reader->GetOutput()->GetScalarPointer());
-
-	for (int k=21;k<=51;k++)
-	{
-		//memset(image+k*dim[0]*dim[1],0,2*dim[0]*dim[1]);
-	}
 
 	freeMemory();	
 	readerImageCast = vtkImageCast::New();//数据类型转换
 	readerImageCast->SetInputConnection(reader->GetOutputPort());
 	readerImageCast->SetOutputScalarTypeToUnsignedShort ();
 	readerImageCast->ClampOverflowOn();//阀值
-
 
 	//设置不透明度传递函数//该函数确定各体绘像素或单位长度值的不透明度
 	opacityTransferFunction = vtkPiecewiseFunction::New();//一维分段函数变换
@@ -783,7 +963,6 @@ void Brain::showAll()
 	opacityTransferFunction->AddPoint(4000, 1);
 	//opacityTransferFunction->AddPoint(736.25, 1.0);
 
-
 	//设置颜色传递函数,该函数确定体绘像素的颜色值或者灰度值
 	colorTransferFunction = vtkColorTransferFunction::New();
 	colorTransferFunction->SetColorSpaceToRGB();
@@ -794,14 +973,8 @@ void Brain::showAll()
 	colorTransferFunction->AddRGBPoint(1150, 0, 0, 0);
 	colorTransferFunction->AddRGBPoint(1200, 0.5, 0.8, 0.5);
 	colorTransferFunction->AddRGBPoint(1250, 1, 1, 1);
-	//colorTransferFunction->AddRGBPoint(2000, 0, 0, 1);
-	//colorTransferFunction->AddRGBPoint(2048, 0, 1, 0);
-	//
-	//colorTransferFunction->AddRGBPoint(4000, 0.8, 0.8, 0.8);
 
-	volumeProperty = vtkVolumeProperty::New();
-	//设定一个体绘容器的属性
-
+	volumeProperty = vtkVolumeProperty::New();//设定一个体绘容器的属性
 	volumeProperty->SetScalarOpacity(opacityTransferFunction);//不透明度
 	volumeProperty->SetColor(colorTransferFunction);//设置颜色
 	volumeProperty->ShadeOn();//影阴
@@ -844,31 +1017,27 @@ void Brain::showAll()
 	//widget->cachedImage()->Delete();
 	widget2->GetRenderWindow()->AddRenderer(ren2);
 	widget2->update();
-	
-
 	this->statusBar()->showMessage(QString("%1").arg(QString::number(*((unsigned short *)reader->GetOutput()->GetScalarPointer()))), 5000);
 }
 
 
-void Brain::freeMemory()
-{
+void Brain::freeMemory(){
 	
 	ren2->RemoveVolume(volume);
-
 	readerImageCast->Delete();
 	opacityTransferFunction->Delete();
 	colorTransferFunction->Delete();
 	volumeProperty->Delete();
 	compositeFunction->Delete();
 	//volumeMapper->Delete();
-	volume->Delete();
-	
-	//ren->Delete();
-	
+	volume->Delete();	
+	//ren->Delete();	
 }
 
+//恢复原图
 void Brain::restore()
 {
+//memcpy用来做内存拷贝，可以拷贝任何数据类型的对象
 	memcpy(((unsigned short *)reader->GetOutput()->GetScalarPointer()),copyOfImg,dim[0]*dim[1]*dim[2]*2);
 }
 
@@ -882,7 +1051,6 @@ void Brain::showBrainPoolOnly()
 	int average=550;
 	int threshold=130;
 	bool index=1;
-
 
 	bool *flag=new bool [width*height*level];
 	memset(flag,0,width*height*level*sizeof(bool));
@@ -927,7 +1095,6 @@ void Brain::showBrainPoolOnly()
 	while(index)
 	{
 		index=0;
-
 		for (int k=17;k<=32;k++)
 		{
 			for(int i=1;i<height-1;i++)
@@ -1002,30 +1169,22 @@ void Brain::removeBackground()
 		*(imgData+width*i)=BACKGROUND;
 		*(imgData+width-1+width*i)=BACKGROUND;
 	}
-
-
-	double average=0;
-
-	
+	double average=0;	
 	average+=*(imgData+1+1*width);
 	flag[1+1*width]=1;
 	*(imgData+1+1*width)=BACKGROUND;
-
 
 	average+=*(imgData+1+(height-2)*width);
 	flag[1+(height-2)*width]=1;
 	*(imgData+1+(height-2)*width)=BACKGROUND;
 
-
 	average+=*(imgData+width-2+1*width);
 	flag[width-2+1*width]=1;
 	*(imgData+width-2+1*width)=BACKGROUND;
 
-
 	average+=*(imgData+width-2+(height-2)*width);
 	flag[width-2+(height-2)*width]=1;
 	*(imgData+width-2+(height-2)*width)=BACKGROUND;
-
 
 	average/=4.0;
 	//int count=2*(width+height);
@@ -1062,8 +1221,6 @@ void Brain::removeBackground()
 			}
 		}
 	}
-	//TRACE()
-	//memcpy(data,flag,2*width*height);
 }
 
 void Brain::showAllBrain()
@@ -1075,7 +1232,6 @@ void Brain::showAllBrain()
 
 int  Brain::RegionGrow_1(unsigned short *data,int width,int height)
 {
-	
 	bool *flag=new bool [width*height];
 	memset(flag,0,width*height);
 
@@ -1094,7 +1250,6 @@ int  Brain::RegionGrow_1(unsigned short *data,int width,int height)
 		*(data+width-1+width*i)=0;
 	}
 
-	
 	double average=0;
 
 	point seed={1,1};
@@ -1102,28 +1257,24 @@ int  Brain::RegionGrow_1(unsigned short *data,int width,int height)
 	flag[seed.x+seed.y*width]=1;
 	*(data+seed.x+seed.y*width)=0;
 	
-
 	seed.x=1;
 	seed.y=height-2;
 	average+=*(data+seed.x+seed.y*width);
 	flag[seed.x+seed.y*width]=1;
 	*(data+seed.x+seed.y*width)=0;
 	
-
 	seed.x=width-2;
 	seed.y=1;
 	average+=*(data+seed.x+seed.y*width);
 	flag[seed.x+seed.y*width]=1;
 	*(data+seed.x+seed.y*width)=0;
 	
-
 	seed.x=width-2;
 	seed.y=height-2;
 	average+=*(data+seed.x+seed.y*width);
 	flag[seed.x+seed.y*width]=1;
 	*(data+seed.x+seed.y*width)=0;
 	
-
 	average/=4.0;
 	int count=2*(width+height);
 	int threshold=100;
@@ -1173,9 +1324,7 @@ int  Brain::RegionGrow_1(unsigned short *data,int width,int height)
 	qDebug()<<"???????????????"<<count;
 
 	cout<<tmpNum<<endl;
-	//TRACE()
-	//memcpy(data,flag,2*width*height);
-	return count+tmpNum;
+	return count + tmpNum;
 }
 
 int Brain::getBrainVol()
@@ -1189,7 +1338,6 @@ int Brain::getBrainVol()
 	int average=1100;
 	int threshold=200;
 	bool index=1;
-
 
 	bool *flag=new bool [width*height*level];
 	memset(flag,0,width*height*level*sizeof(bool));
@@ -1263,6 +1411,5 @@ int Brain::getBrainVol()
 		}
 
 	}
-
 	return count;
 }

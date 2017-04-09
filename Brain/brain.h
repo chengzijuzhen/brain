@@ -25,6 +25,10 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QRadioButton> 
 
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
@@ -100,7 +104,12 @@ private slots:
 	void showAll();
 	void freeMemory();
 	void search();
-//	void clickButton();
+	void clickButton();
+	void createDefaultsDialog();
+	void createAppearanceDialog();
+	void createExtensionDialog();
+	void createShortcutKeyDialog();
+	void createPrintScreenDialog();
 
 private:
 	QVTKWidget *widget;
