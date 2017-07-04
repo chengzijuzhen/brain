@@ -527,25 +527,21 @@ void Brain::fileOpen()
 	reader->SetDataOrigin(0.0, 0.0, 0.0);//设置基准点
 
 	data=reader->GetOutput();
-	data->GetDimensions(dim);
-	qDebug()<<dim[0]<<" "<<dim[1]<<" "<<dim[2]<<"\n";
+	data->GetDimensions(dim);//获取图像维数
 	double *spacing = reader->GetDataSpacing();
-	qDebug()<<*spacing<<" "<<*(spacing+1)<<" "<<*(spacing+2)<<"\n";
+
 
 	//设置备份
 	copyOfImg = new unsigned short[dim[0]*dim[1]*dim[2]];
 	memcpy(copyOfImg,((unsigned short *)data->GetScalarPointer()),dim[0]*dim[1]*dim[2]*sizeof(unsigned short));
-			
 	unsigned short *image=(unsigned short *)(reader->GetOutput()->GetScalarPointer());
 
-		
 	readerImageCast = vtkImageCast::New();//数据类型转换
 	readerImageCast->SetInputConnection(reader->GetOutputPort());
 	readerImageCast->SetOutputScalarTypeToUnsignedShort ();
 	readerImageCast->ClampOverflowOn();//阀值
-
-	
-	//设置不透明度传递函数//该函数确定各体绘像素或单位长度值的不透明度
+		
+	//设置不透明度传递函数,该函数确定各体绘像素或单位长度值的不透明度
 	opacityTransferFunction = vtkPiecewiseFunction::New();//一维分段函数变换
 	opacityTransferFunction->AddPoint(400, 0);
 	opacityTransferFunction->AddPoint(800, 0);
@@ -557,39 +553,27 @@ void Brain::fileOpen()
 	opacityTransferFunction->AddPoint(1400, 0);
 	opacityTransferFunction->AddPoint(3600, 0);
 	opacityTransferFunction->AddPoint(4000, 0);
-	//opacityTransferFunction->AddPoint(736.25, 1.0);
-		
-
+	
 	//设置颜色传递函数,该函数确定体绘像素的颜色值或者灰度值
 	colorTransferFunction = vtkColorTransferFunction::New();
 	colorTransferFunction->SetColorSpaceToRGB();
-	//colorTransferFunction->AddRGBPoint(20, 1, 1, 1);//添加色彩点（第一个参数索引）
-	//colorTransferFunction->AddRGBPoint(495, 1, 230.0/255, 170.0/255);
+
 	colorTransferFunction->AddRGBPoint(1050, 1, 1, 1);
 	colorTransferFunction->AddRGBPoint(1100, 0.5, 0.8, 0.5);
 	colorTransferFunction->AddRGBPoint(1150, 0, 0, 0);
 	colorTransferFunction->AddRGBPoint(1200, 0.5, 0.8, 0.5);
 	colorTransferFunction->AddRGBPoint(1250, 1, 1, 1);
-	//colorTransferFunction->AddRGBPoint(2000, 0, 0, 1);
-	//colorTransferFunction->AddRGBPoint(2048, 0, 1, 0);
-	//
-	//colorTransferFunction->AddRGBPoint(4000, 0.8, 0.8, 0.8);
-
+	
 	volumeProperty = vtkVolumeProperty::New();
 	//设定一个体绘容器的属性
 		
 	volumeProperty->SetScalarOpacity(opacityTransferFunction);//不透明度
-	//volumeProperty->SetColor(colorTransferFunction);//设置颜色
 	volumeProperty->ShadeOn();//影阴
 	volumeProperty->SetInterpolationTypeToLinear();//直线与样条插值之间逐发函数
 	volumeProperty->SetAmbient(0.2);//环境光系数
 	volumeProperty->SetDiffuse(0.9);//漫反射
 	volumeProperty->SetSpecular(0.2);//高光系数
 	volumeProperty->SetSpecularPower(10); //高光强度 
-
-	//定义光线投射方法为MIP体绘制方法,MIP为体绘制经典算法
-	//  vtkVolumeRayCastMIPFunction*mipRaycastFunction = vtkVolumeRayCastMIPFunction::New();
-	//  mipRaycastFunction->SetMaximizeMethodToOpacity();
 
 	compositeFunction = vtkVolumeRayCastCompositeFunction::New();
 	//运行沿着光线合成
@@ -605,33 +589,17 @@ void Brain::fileOpen()
 	gpuRayCastMapper->SetBlendModeToComposite();
 	gpuRayCastMapper->SetAutoAdjustSampleDistances(1);
 
-	//volumeMapper = vtkSmartVolumeMapper::New();   //体绘制器
-	//volumeMapper->SetVolumeRayCastFunction(compositeFunction); //载入绘制方法
-	//volumeMapper->SetRequestedRenderMode(vtkSmartVolumeMapper::GPURenderMode);
-	//volumeMapper->SetInputConnection(readerImageCast->GetOutputPort());//图像数据输入
-	
-	//glRayCastMapper = vtkOpenGLGPUVolumeRayCastMapper::New();
-	//glRayCastMapper->SetInputConnection(readerImageCast->GetOutputPort());
-	
-	
-	//volumeMapper->SetNumberOfThreads(3);
-
 	//定义Volume
 	volume = vtkVolume::New();//表示透示图中的一组三维数据
 	volume->SetMapper(gpuRayCastMapper);
 	volume->SetProperty(volumeProperty);//设置体属性
 
-	//ren = vtkRenderer::New();
 	ren->AddVolume(volume);//将Volume装载到绘制类中
-	ren->SetBackground(255, 255, 255);
+	//ren->SetBackground(255, 255, 255);
 	ren->ResetCamera();
 
-	//widget->cachedImageClean();
 	widget->GetRenderWindow()->AddRenderer(ren);
-	
 	widget->update();
-
-	//QApplication::overrideCursor();
 }
 
 void Brain::fileSave()
@@ -658,14 +626,16 @@ void Brain::showBrainOnly()
 	restore();
 
 	unsigned short *imgData=((unsigned short *)reader->GetOutput()->GetScalarPointer());
+
+	//维度
 	int height = dim[0];
 	int width = dim[1];
 	int level = dim[2];
 
 	int average = 1100;//种子像素
 	int threshold = 100;//阈值
-	//如果所考虑的像素与种子像素灰度值差的绝对值小于阈值，则将该像素包括进种子像素所在区域
-		
+	//如果所考虑的像素与种子像素灰度值差的绝对值小于阈值，则将该像素包括进种子像素所在区域	
+
 	bool index=1;
 
 	//种子标记
@@ -675,9 +645,7 @@ void Brain::showBrainOnly()
 	//将image041，初始化
 	unsigned short *p = imgData + 10 * width * height;
 	flag[10 * width * height + 128 * width + 128] = 1;
-	//cout << imgData[10 * width * height + 128 * width + 128] << endl;
-
-	
+		
 	int count=0;//记录种子像素个数
 
 	while(index)
@@ -763,84 +731,77 @@ void Brain::showBrainOnly()
 	showAll();
 }
 
+//移除颅骨的函数
 void Brain::removeBone(unsigned short * image)
 {
-	//restore();
-	//Qt::WindowFlags
-	//显示骨头的函数
-	int height=dim[0],width=dim[1],level=dim[2];
-	unsigned short *dest=new unsigned short[height*width];
+	int height = dim[0];
+	int width = dim[1];
+	int level = dim[2];
+	unsigned short *dest = new unsigned short[height * width];
 
-	for (int k=0;k<level;k++)
+	//初始化dest
+	for (int k = 0; k < level; k++)
 	{
-		//unsigned short *image=((unsigned short *)reader->GetOutput()->GetScalarPointer())+k*height*width;
+		memcpy(dest, image + k * width * height, 2 * width * height);//memset是以字节为单位，初始化内存块。把每个数组单元初始化成任何想要的值。
+	
+		int min = image[k * width * height];
+		int max = image[k * width * height];
 
-		//unsigned short *dest=new unsigned short[height*width];
-
-		memcpy(dest,image+k*width*height,2*width*height);
-
-		int min=image[k*width*height],max=image[k*width*height];
-		for(int i=0;i<height;i++)
+		for(int i = 0; i < height; i++)
 		{
-			for (int j=0;j<width;j++)
+			for(int j = 0; j < width; j++)
 			{
-				if (image[k*width*height+i*width+j]>max)
+				if(image[k * width * height + i * width + j] > max)
 				{
-					max=image[k*width*height+i*width+j];
+					max = image[k * width * height + i * width + j];
 				}
-				else if (image[k*width*height+i*width+j]<min)
+				else if(image[k * width * height + i * width + j] < min)
 				{
-					min=image[k*width*height+i*width+j];
+					min = image[k * width * height + i * width + j];
 				}
 			}
 		}
 
-		int average=(min+max)/2;
-		int count=0;
+		//计算出种子的大小
+		int average = (min + max) / 2;
+		int count = 0;
 
-
-		while(count<10)
+		while(count < 10)
 		{
-			int sumOfObj=0;
-			int sumOfBack=0;
-			int numOfObj=0;
-			int numOfBack=0;
-			for (int i=0;i<height;i++)
+			int sumOfObj = 0;
+			int sumOfBack = 0;
+			int numOfObj = 0;
+			int numOfBack = 0;
+
+			for (int i = 0; i<height;i++)
 			{
 				for(int j=0;j<width;j++)
 				{
-					if (image[k*width*height+i*width+j]<average)
+					if (image[k * width * height + i * width + j] < average)
 					{
-						dest[i*width+j]=0;
-						sumOfBack+=image[k*width*height+i*width+j];
+						dest[i * width + j] = 0;
+						sumOfBack += image[k * width * height + i * width + j];
 						numOfBack++;
 					} 
 					else
 					{
-						dest[i*width+j]=BONE;
-						sumOfObj+=image[k*width*height+i*width+j];
+						dest[i * width + j] = BONE;
+						sumOfObj += image[k * width * height + i * width + j];
 						numOfObj++;
 					}
 				}
 			}
 
-			average=(sumOfObj/numOfObj+sumOfBack/numOfBack)/2;
+			average=(sumOfObj / numOfObj + sumOfBack / numOfBack) / 2;
 			count++;
-		}
-		
-		memcpy(image+k*width*height,dest,2*width*height);
-
-		
+		}		
+		memcpy(image + k * width * height, dest, 2 * width * height);		
 	}
-	delete [] dest;
+	delete[] dest;
 	this->statusBar()->showMessage(QString("%1").arg(QString::number(*((unsigned short *)reader->GetOutput()->GetScalarPointer()))), 5000);
-	
-	
-	//showAll();
-	//showSkin->setEnabled(true);
 }
 
-
+//显示颅骨的函数
 void Brain::showBoneOnly()
 {
 	restore();
@@ -848,20 +809,14 @@ void Brain::showBoneOnly()
 	showAll();
 }
 
-
+//显示皮肤的函数
 void Brain::showSkinOnly()
 {
 	restore();
-	//removeBackground();
-
 	unsigned short *dest=new unsigned short[dim[0]*dim[1]*dim[2]];
 	memcpy(dest,copyOfImg,2*dim[0]*dim[1]*dim[2]);
-
-	removeBone(dest);
-	
-	
-	//显示皮肤的函数
 	//image是去除背景之后的矩阵
+	removeBone(dest);
 	
 	unsigned short *image=((unsigned short *)reader->GetOutput()->GetScalarPointer());
 	int height=dim[0],width=dim[1],level=dim[2];
@@ -870,12 +825,11 @@ void Brain::showSkinOnly()
 
 	for (int k=0;k<level;k++)
 	{
-		for (double theta=0;theta<2*PI;theta+=0.001)
+		for (double theta = 0; theta < 2 * PI; theta += 0.001)
 		{
-			
-			int lim=min(centerY,centerX)-1;
+			int lim=min(centerY, centerX) - 1;
 			int r=lim;
-			while (r>0)
+			while (r > 0)
 			{
 				int x=centerX+r*cos(theta);
 				int y=centerY+r*sin(theta);
@@ -889,7 +843,6 @@ void Brain::showSkinOnly()
 						x=centerX+r*cos(theta);
 						y=centerY+r*sin(theta);
 					}
-
 					int dr=1;				
 					int x0=centerX+(r+1)*cos(theta);
 					int y0=centerY+(r+1)*sin(theta);
